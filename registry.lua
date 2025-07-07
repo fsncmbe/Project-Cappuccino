@@ -9,6 +9,10 @@ function AddEntity(name, entity_dir)
   entities[name] = entity_dir
 end
 
+function GetEntity(name)
+  return entities[name]
+end
+
 function DelEntity(name)
   entities[name] = nil
 end
@@ -17,11 +21,12 @@ function AddComponentToEntity(name, component_name, component)
   entities[name][component_name] = component
 end
 
+-- pass entity dir
 function HasComponent(entity, component)
-  if entities[entity][component] ~= nil then
-    return true
-  else
-    return false
+  if entity[component] ~= nil then
+      return true
+    else
+      return false
   end
 end
 
@@ -31,7 +36,7 @@ function View(...)
   for i,e in pairs(entities) do
     local fits = true
     for j,c in pairs(args) do
-      if not HasComponent(i, c) then
+      if not HasComponent(e, c) then
         fits = false
         break
       end
@@ -43,8 +48,8 @@ function View(...)
   return dir
 end
 
-function AddSystem(system, sysfunc)
-  systems[system] = sysfunc
+function AddSystem(sysfunc)
+  table.insert(systems, sysfunc)
 end
 
 function UpdateSystems(dt)

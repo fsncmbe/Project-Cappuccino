@@ -13,11 +13,18 @@ local renderpipeline = {
 
 -- but this will not be in updateSystems, but its own with updateRender()
 
-function SortByY(entity1, entity2)
-  return entity1["position"]["y"] < entity2["position"]["y"]
+function SortBy(entity1, entity2, ...)
+  local ent1 = entity1
+  local ent2 = entity2
+  local args = {...}
+  for i,v in pairs(args) do
+    ent1 = ent1[v]
+    ent2 = ent2[v]
+  end
+  return ent1 < ent2
 end
 
---components: render={drawable, layer}, position={x, y}, size={width, height}
+--components: render={drawable, layer}, position={x, y}, size={x, y}
 
 function UpdateRender()
   -- Update layers
@@ -29,7 +36,7 @@ function UpdateRender()
   local dir = View("render", "position", "size")
 
   -- Sort the dir by y positions, no regard to layer
-  table.sort(dir, SortByY)
+  table.sort(dir, function(a, b) return SortBy(a, b, "position", "y") end)
 
   -- Go through each and assign to layer
   for i,v in pairs(dir) do
@@ -56,7 +63,7 @@ function UpdateRender()
       table.insert(renderpipeline[v["render"]["layer"]],
       function ()
         love.graphics.setColor(color)
-        love.graphics.rectangle("fill", v["position"]["x"], v["position"]["y"], v["size"]["width"], v["size"]["height"])
+        love.graphics.rectangle("fill", v["position"]["x"], v["position"]["y"], v["size"]["x"], v["size"]["y"])
         end)
     end
 

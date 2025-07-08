@@ -4,9 +4,23 @@ require("core")
 
 local entities = {}
 local systems = {}
+local components = {}
 
-function AddEntity(name, entity_dir)
-  entities[name] = entity_dir
+function AddEntity(name, comps)
+  entities[name] = {}
+  for _, v in pairs(comps) do
+    AddComponent(name, v)
+  end
+end
+
+function LoadEntityFromFile(name, path)
+  local dir = ReadJson(path)
+  AddEntity(name, dir["components"])
+  for i,v in pairs(dir) do
+    if i ~= "components" then
+      MergeIntoFirstTable(GetComponent(name, i), v)
+    end
+  end
 end
 
 function GetEntity(name)
@@ -17,8 +31,23 @@ function DelEntity(name)
   entities[name] = nil
 end
 
-function AddComponentToEntity(name, component_name, component)
-  entities[name][component_name] = component
+function RegComponent(name, table)
+  components[name] = table
+end
+
+function LoadComponentsFromFile(path)
+  local dir = ReadJson(path)
+  for i,v in pairs(dir) do
+    RegComponent(i, v)
+  end
+end
+
+function AddComponent(name, componentname)
+  entities[name][componentname] = CopyTable(components[componentname])
+end
+
+function GetComponent(name, componentname)
+  return entities[name][componentname]
 end
 
 -- pass entity dir

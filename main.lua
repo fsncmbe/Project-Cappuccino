@@ -6,6 +6,7 @@ require("registry")
 require("physics")
 require("input")
 require("render")
+require("filehandler")
 
 function love.load()
 
@@ -15,24 +16,14 @@ function love.load()
   -- Add Systems
   AddSystem(SysInputFunc)
   AddSystem(SysPhysicsFunc)
-  -- !!Implement way for components to auto generate
 
-  -- Add Entities
-  AddEntity("pla", {
-    position = {x=200, y=10};
-    size = {x=100, y=100};
-    render = {drawable=nil, layer=1, color={.2, .6, .2}};
-    collision = {weight = -1, future_pos = {x=200, y=10}}
-  })
-  AddEntity("player", {
-    position = {x=10, y=29};
-    size = {x=100, y=100};
-    render = {drawable=nil, layer=1};
-    movement = {direction = {x=0, y=0}, speed = 500};
-    input = {};
-    collision = {weight = 100, future_pos = {x=10, y=29}}
-  })
+  -- Reg Components
+  LoadComponentsFromFile("assets/entity/components.json")
 
+  -- Entities
+  LoadEntityFromFile("player", "assets/entity/player.json")
+  LoadEntityFromFile("bat", "assets/entity/enemy.json")
+  
   -- Commands
   AddCommand("move", CoMove)
 

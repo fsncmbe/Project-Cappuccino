@@ -1,0 +1,6 @@
+{
+    "components" : ["position", "size", "render", "collision"],
+    "position": {"x":200,"y":200},
+    "size": {"x":100,"y":200},
+    "collision": {"future":{"x":200, "y":200}}
+}

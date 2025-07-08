@@ -50,7 +50,7 @@ function UpdateRender()
     -- Add objects to render pipeline, to distinguish between layers
 
     -- If object has a drawable in it like an image 
-    if v["render"]["drawable"] ~= nil then
+    if v["render"]["drawable"] ~= 0 then
       table.insert(renderpipeline[v["render"]["layer"]],
       function ()
         love.graphics.setColor(color)

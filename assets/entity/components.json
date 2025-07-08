@@ -1,0 +1,8 @@
+{
+    "position": {"x": 0,"y": 0},
+    "size":     {"x": 100, "y":100},
+    "render":   {"drawable":0, "layer":1},
+    "movement": {"direction": {"x":0,"y":0}, "speed":500},
+    "input":    {},
+    "collision":{"weight":100, "future":{"x":0,"y":0}}
+}
